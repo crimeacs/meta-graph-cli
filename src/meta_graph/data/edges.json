@@ -1,0 +1,278 @@
+{
+  "adgroup": [
+    "adcreatives",
+    "adrules_governed",
+    "copies",
+    "insights",
+    "leads",
+    "previews",
+    "targetingsentencelines"
+  ],
+  "album": [
+    "photos"
+  ],
+  "application": [
+    "accounts",
+    "ad_placement_groups",
+    "adnetworkanalytics_results",
+    "aem_attribution",
+    "aem_conversion_configs",
+    "aem_conversion_filter",
+    "agencies",
+    "app_event_types",
+    "app_indexing",
+    "app_installed_groups",
+    "appassets",
+    "button_auto_detection_device_selection",
+    "cloudbridge_settings",
+    "codeless_event_mappings",
+    "connected_client_businesses",
+    "da_checks",
+    "ios_skadnetwork_conversion_config",
+    "mmp_auditing",
+    "mobile_sdk_gk",
+    "model_asset",
+    "monetized_digital_store_objects",
+    "object_types",
+    "objects",
+    "permissions",
+    "products",
+    "purchases",
+    "sgw_dataset_status",
+    "sgw_install_deferral_link",
+    "threat_privacy_groups_member",
+    "threat_privacy_groups_owner",
+    "whatsapp_business_solutions"
+  ],
+  "canvas": [
+    "preview",
+    "previews"
+  ],
+  "comment": [
+    "comments",
+    "likes",
+    "reactions"
+  ],
+  "conversation": [
+    "messages"
+  ],
+  "event": [
+    "roles",
+    "ticket_tiers",
+    "videos"
+  ],
+  "group-message": [
+    "attachments",
+    "dynamic_posts",
+    "insights",
+    "reactions",
+    "sharedposts",
+    "sponsor_tags",
+    "to"
+  ],
+  "ig-comment": [
+    "replies"
+  ],
+  "ig-media": [
+    "children",
+    "comments",
+    "insights",
+    "product_tags"
+  ],
+  "ig-user": [
+    "available_catalogs",
+    "business_discovery",
+    "catalog_product_search",
+    "content_publishing_limit",
+    "insights",
+    "live_media",
+    "media",
+    "media_publish",
+    "mentions",
+    "product_appeal",
+    "recently_searched_hashtags",
+    "stories",
+    "tags"
+  ],
+  "instagram-business-asset": [
+    "assigned_users"
+  ],
+  "message": [
+    "attachments",
+    "shares"
+  ],
+  "offline-conversion-data-set-upload": [
+    "progress",
+    "pull_sessions"
+  ],
+  "page": [
+    "ab_tests",
+    "ads_posts",
+    "agencies",
+    "albums",
+    "ar_experience",
+    "assigned_users",
+    "audio_media_copyrights",
+    "blocked",
+    "businessprojects",
+    "call_to_actions",
+    "canvas_elements",
+    "canvases",
+    "chat_plugin",
+    "commerce_orders",
+    "conversations",
+    "crosspost_whitelisted_pages",
+    "ctx_optimization_eligibility",
+    "custom_labels",
+    "custom_user_settings",
+    "fantasy_games",
+    "feed",
+    "global_brand_children",
+    "image_copyrights",
+    "insights",
+    "leadgen_forms",
+    "likes",
+    "live_videos",
+    "locations",
+    "media_fingerprints",
+    "message_templates",
+    "messaging_feature_review",
+    "messenger_call_permissions",
+    "messenger_call_settings",
+    "messenger_lead_forms",
+    "messenger_profile",
+    "milestones",
+    "nlp_configs",
+    "page_whatsapp_number_verification",
+    "personas",
+    "photos",
+    "picture",
+    "product_catalogs",
+    "published_posts",
+    "ratings",
+    "roles",
+    "scheduled_posts",
+    "settings",
+    "shop_setup_status",
+    "store_locations",
+    "subscribed_apps",
+    "tabs",
+    "tagged",
+    "take_thread_control",
+    "thread_owner",
+    "video_copyright_rules",
+    "video_copyrights",
+    "video_lists",
+    "videos",
+    "visitor_posts"
+  ],
+  "page-post": [
+    "attachments",
+    "comments",
+    "dynamic_posts",
+    "insights",
+    "likes",
+    "reactions",
+    "sharedposts",
+    "sponsor_tags",
+    "to"
+  ],
+  "payment": [
+    "dispute",
+    "refunds"
+  ],
+  "photo": [
+    "insights",
+    "likes",
+    "picture",
+    "sponsor_tags"
+  ],
+  "post": [
+    "attachments",
+    "comments",
+    "dynamic_posts",
+    "insights",
+    "reactions",
+    "sharedposts",
+    "sponsor_tags",
+    "to"
+  ],
+  "shadow-ig-user": [
+    "agencies",
+    "branded_content_ad_permissions",
+    "branded_content_advertisable_medias",
+    "content_publishing_limit",
+    "insights",
+    "live_media",
+    "media",
+    "notification_message_tokens",
+    "product_appeal",
+    "recently_searched_hashtags",
+    "stories",
+    "tags",
+    "upcoming_events"
+  ],
+  "test-user": [
+    "friends"
+  ],
+  "user": [
+    "accounts",
+    "ad_studies",
+    "albums",
+    "apprequestformerrecipients",
+    "apprequests",
+    "assigned_applications",
+    "assigned_business_asset_groups",
+    "assigned_pages",
+    "assigned_product_catalogs",
+    "assigned_whatsapp_business_accounts",
+    "business_users",
+    "businesses",
+    "custom_labels",
+    "feed",
+    "ids_for_apps",
+    "ids_for_business",
+    "ids_for_pages",
+    "likes",
+    "live_videos",
+    "music",
+    "permissions",
+    "photos",
+    "picture",
+    "rich_media_documents",
+    "videos"
+  ],
+  "video": [
+    "comments"
+  ],
+  "video-copyright": [
+    "update_records"
+  ],
+  "video-list": [
+    "videos"
+  ],
+  "video-poll": [
+    "poll_options"
+  ],
+  "whats-app-business-account": [
+    "activities",
+    "assigned_users",
+    "call_analytics",
+    "conversation_analytics",
+    "dataset",
+    "message_template_previews",
+    "message_templates",
+    "payment_configuration",
+    "payment_configurations",
+    "phone_numbers",
+    "pricing_analytics",
+    "product_catalogs",
+    "solutions",
+    "subscribed_apps",
+    "template_groups",
+    "template_performance_metrics"
+  ],
+  "whats-app-business-hsm": [
+    "compare"
+  ]
+}
