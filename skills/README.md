@@ -1,6 +1,6 @@
-# `meta-graph` Claude Code skill
+# `meta-platform-ops` Claude Code skill
 
-A Claude Code [Skill](https://www.anthropic.com/news/claude-skills) that teaches Claude how to operate the [`meta-graph`](https://github.com/crimeacs/meta-graph-cli) CLI to work with Meta's Graph API and Instagram Graph API.
+A Claude Code [Skill](https://www.anthropic.com/news/claude-skills) that teaches Claude how to operate the [`meta-graph-cli`](https://github.com/crimeacs/meta-graph-cli) CLI to work with Meta's Graph API and Instagram Graph API.
 
 When this skill is installed, conversational requests like:
 
@@ -27,7 +27,7 @@ export META_GRAPH_TOKEN="EAA..."   # from https://developers.facebook.com/tools/
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -r skills/meta-graph ~/.claude/skills/
+cp -r skills/meta-platform-ops ~/.claude/skills/
 ```
 
 Restart Claude Code (or open a new session) to pick it up.
@@ -36,14 +36,14 @@ Restart Claude Code (or open a new session) to pick it up.
 
 ```bash
 mkdir -p .claude/skills
-cp -r path/to/meta-graph-cli/skills/meta-graph .claude/skills/
+cp -r path/to/meta-graph-cli/skills/meta-platform-ops .claude/skills/
 ```
 
 Then commit the skill folder if your team should share it.
 
 ### For Claude.ai
 
-1. Zip the `meta-graph` folder.
+1. Zip the `meta-platform-ops` folder.
 2. Open Claude.ai → Settings → Capabilities → Skills.
 3. Upload the zip.
 4. Toggle the skill on.

@@ -1,5 +1,5 @@
 ---
-name: meta-graph
+name: meta-platform-ops
 description: Operate Meta's Graph API and Instagram Graph API from the command line via the `meta` CLI (https://github.com/crimeacs/meta-graph-cli). Use when the user asks to post, publish, or schedule to Instagram (photo, video, Reel, carousel, story); fetch IG media, stories, mentions, tags, insights or analytics; reply to / hide / moderate IG comments; search Instagram hashtags or find recent/top media for a hashtag; run public business-discovery on another IG profile; get an IG embed code; post to or read a Facebook Page feed; list Pages they manage; debug or refresh an access token; or call any Graph API endpoint like /me, /<page-id>/feed, /<ig-id>/media. Triggers on phrases like "post to Instagram", "publish IG reel", "IG insights", "Instagram analytics", "IG hashtag search", "reply to comment on IG", "Facebook Page post", "Meta Graph API", "WhatsApp Business API", "long-lived token", or any mention of `graph.facebook.com`. Skip for general OAuth questions, browser-side JS SDK work, or pure design/copy tasks.
 license: MIT
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
@@ -9,7 +9,7 @@ metadata:
   cli-binary: meta
 ---
 
-# meta-graph CLI skill
+# meta-platform-ops
 
 Use the `meta` CLI to talk to Meta's Graph API and Instagram Graph API. The CLI is a thin HTTP wrapper — anything documented at <https://developers.facebook.com/docs/graph-api/> or <https://developers.facebook.com/docs/instagram-platform/> is reachable.
 

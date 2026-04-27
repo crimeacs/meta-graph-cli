@@ -177,10 +177,10 @@ Errors go to stderr as JSON. Exit codes:
 
 ## Claude Code skill
 
-A [Claude Code skill](https://www.anthropic.com/news/claude-skills) that teaches Claude how to drive this CLI for natural-language Instagram/Meta tasks ships at [`skills/meta-graph/`](./skills/meta-graph/). Install with:
+A [Claude Code skill](https://www.anthropic.com/news/claude-skills) named **`meta-platform-ops`** ships at [`skills/meta-platform-ops/`](./skills/meta-platform-ops/) and teaches Claude how to drive this CLI from natural-language requests. Install with:
 
 ```bash
-mkdir -p ~/.claude/skills && cp -r skills/meta-graph ~/.claude/skills/
+mkdir -p ~/.claude/skills && cp -r skills/meta-platform-ops ~/.claude/skills/
 ```
 
 Then ask Claude things like *"post this image to Instagram with caption '…'"* or *"reply to all unanswered comments on this Reel"* — it'll resolve your IG account, run the right `meta ig …` invocations, and surface error codes with actionable fixes. See [`skills/README.md`](./skills/README.md) for details.
