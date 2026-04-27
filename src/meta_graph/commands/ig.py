@@ -57,23 +57,29 @@ def ig(ctx: click.Context, **gflags: object) -> None:
     stash_globals(ctx, **gflags)
 
 
-# ---- accounts -------------------------------------------------------------
+# ---- accounts / me --------------------------------------------------------
 
 @ig.command("accounts")
 @click.pass_context
 def accounts(ctx: click.Context) -> None:
-    """List Pages you manage and their linked IG Business Account ids."""
+    """List Pages you manage and their linked IG Business Account ids.
+
+    For Instagram-with-Instagram-Login tokens (IGAA…) there are no Pages —
+    the response collapses to a single row with `flow: "instagram-login"`.
+    """
     client = build_client(ctx.obj)
     try:
         pages = client.list_pages_with_ig()
     except GraphError as e:
         handle_graph_error(e)
         return
+    flow = "instagram-login" if client.is_instagram_login else "facebook-login"
     out = []
     for p in pages:
         ig_obj = p.get("instagram_business_account") or {}
         out.append(
             {
+                "flow": flow,
                 "page_id": p.get("id"),
                 "page_name": p.get("name"),
                 "ig_user_id": ig_obj.get("id"),
@@ -82,6 +88,91 @@ def accounts(ctx: click.Context) -> None:
         )
     emit({"data": out, "count": len(out)},
          pretty=ctx.obj.get("pretty", False), jq=ctx.obj.get("jq"))
+
+
+@ig.group("me", invoke_without_command=True)
+@click.option("--fields",
+              default="user_id,username,name,biography,profile_picture_url,"
+                      "followers_count,follows_count,media_count,website,account_type",
+              show_default=False)
+@click.pass_context
+def ig_me(ctx: click.Context, fields: str) -> None:
+    """The IG account tied to the current token.
+
+    For IGAA… tokens, /me resolves directly to the IG user (no Page mediation).
+    For EAA… tokens this calls /me/accounts and picks the first linked IG account.
+    """
+    client = build_client(ctx.obj)
+    if ctx.invoked_subcommand is not None:
+        # Stash the resolved id for sub-subcommands
+        try:
+            ig_id = _first_ig_id(client)
+        except GraphError as e:
+            handle_graph_error(e)
+            return
+        ctx.obj["ig_id"] = ig_id
+        return
+    try:
+        if client.is_instagram_login:
+            result = client.get("/me", fields=fields)
+        else:
+            ig_id = _first_ig_id(client)
+            result = client.get(f"/{ig_id}", fields=fields)
+    except GraphError as e:
+        handle_graph_error(e)
+        return
+    emit(result, pretty=ctx.obj.get("pretty", False), jq=ctx.obj.get("jq"))
+
+
+@ig_me.command("media")
+@click.option("--fields", default=None, show_default=False)
+@click.option("--limit", type=int, default=25, show_default=True)
+@click.option("--all", "all_pages", is_flag=True, help="Follow paging.")
+@click.pass_context
+def me_media(ctx: click.Context, fields: str | None, limit: int, all_pages: bool) -> None:
+    """List media on the IG account tied to the current token."""
+    client = build_client(ctx.obj)
+    fields = fields or DEFAULT_IG_MEDIA_FIELDS
+    path = "/me/media" if client.is_instagram_login else f"/{ctx.obj['ig_id']}/media"
+    try:
+        if all_pages:
+            data = list(client.paginate(path, fields=fields, limit=limit))
+        else:
+            page = client.get(path, fields=fields, limit=limit)
+            data = page.get("data") or []
+    except GraphError as e:
+        handle_graph_error(e)
+        return
+    emit({"data": data, "count": len(data)},
+         pretty=ctx.obj.get("pretty", False), jq=ctx.obj.get("jq"))
+
+
+@ig_me.command("insights")
+@click.option("--metric", required=True)
+@click.option("--period", default="day", show_default=True,
+              type=click.Choice(["day", "week", "days_28", "lifetime"]))
+@click.option("--since", default=None)
+@click.option("--until", default=None)
+@click.option("--metric-type", default=None)
+@click.pass_context
+def me_insights(ctx: click.Context, metric: str, period: str,
+                since: str | None, until: str | None, metric_type: str | None) -> None:
+    """Account insights for the IG account tied to the current token."""
+    client = build_client(ctx.obj)
+    path = "/me/insights" if client.is_instagram_login else f"/{ctx.obj['ig_id']}/insights"
+    params: dict[str, Any] = {"metric": metric, "period": period}
+    if since:
+        params["since"] = since
+    if until:
+        params["until"] = until
+    if metric_type:
+        params["metric_type"] = metric_type
+    try:
+        result = client.get(path, **params)
+    except GraphError as e:
+        handle_graph_error(e)
+        return
+    emit(result, pretty=ctx.obj.get("pretty", False), jq=ctx.obj.get("jq"))
 
 
 # ---- user ----------------------------------------------------------------
@@ -659,6 +750,17 @@ def hashtag_top(ctx: click.Context, hashtag_id: str, user_id: str | None, fields
 
 
 def _first_ig_id(client: Any) -> str:
+    """Best IG user id for the current token.
+
+    On the IG-direct flow we ask /me directly. On the FB-mediated flow we walk
+    /me/accounts and pick the first Page that has a linked IG Business Account.
+    """
+    if getattr(client, "is_instagram_login", False):
+        me = client.get("/me", fields="user_id")
+        uid = me.get("user_id") or me.get("id")
+        if uid:
+            return str(uid)
+        raise GraphError("could not resolve /me on the IG-direct flow.")
     pages = client.list_pages_with_ig()
     for p in pages:
         ig_obj = p.get("instagram_business_account") or {}

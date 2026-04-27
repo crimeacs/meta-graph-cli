@@ -29,6 +29,9 @@ def global_options(f: Any) -> Any:
     f = click.option("--timeout", type=int, default=None, help="HTTP timeout in seconds.")(f)
     f = click.option("--retries", type=int, default=None,
                      help="Retry budget for transient errors.")(f)
+    f = click.option("--base", default=None, envvar="META_GRAPH_BASE",
+                     help="Override API host. Default auto-detects from token: "
+                          "IGAA*/IGQW* → graph.instagram.com, else graph.facebook.com.")(f)
     f = click.option("--pretty", is_flag=True,
                      help="Indent JSON; color when stdout is a TTY.")(f)
     f = click.option("--jq", default=None, metavar="EXPR",
@@ -56,6 +59,7 @@ def build_client(ctx_obj: dict[str, Any]) -> GraphClient:
             cli_app_secret=ctx_obj.get("app_secret"),
             cli_timeout=ctx_obj.get("timeout"),
             cli_retries=ctx_obj.get("retries"),
+            cli_base=ctx_obj.get("base"),
             profile=ctx_obj.get("profile") or "default",
         )
     except AuthMissingError as e:
@@ -67,6 +71,7 @@ def build_client(ctx_obj: dict[str, Any]) -> GraphClient:
         app_secret=s.app_secret,
         timeout=s.timeout,
         retries=s.retries,
+        base=s.base,
     )
 
 

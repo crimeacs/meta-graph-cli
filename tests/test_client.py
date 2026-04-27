@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 import pytest
 import requests
 
-from meta_graph.client import GraphClient
+from meta_graph.client import GRAPH_BASE, GRAPH_IG_BASE, GraphClient, detect_base
 from meta_graph.errors import (
     AuthError,
     GraphError,
@@ -150,3 +150,43 @@ def test_batch_serializes() -> None:
 def test_token_required() -> None:
     with pytest.raises(ValueError):
         GraphClient("")
+
+
+def test_detect_base_from_token() -> None:
+    assert detect_base("IGAAxxx") == GRAPH_IG_BASE
+    assert detect_base("IGQWxxx") == GRAPH_IG_BASE
+    assert detect_base("EAAxxx") == GRAPH_BASE
+    assert detect_base("123|abc") == GRAPH_BASE
+    assert detect_base("anything") == GRAPH_BASE
+
+
+def test_client_auto_picks_instagram_host_for_igaa() -> None:
+    c = GraphClient("IGAAtoken")
+    assert c.is_instagram_login is True
+    assert c._url("/me") == f"{GRAPH_IG_BASE}/v22.0/me"
+
+
+def test_client_picks_facebook_host_for_eaa() -> None:
+    c = GraphClient("EAAtoken")
+    assert c.is_instagram_login is False
+    assert c._url("/me") == f"{GRAPH_BASE}/v22.0/me"
+
+
+def test_explicit_base_overrides_token_prefix() -> None:
+    c = GraphClient("IGAAtoken", base="https://example.test/graph")
+    assert c.base == "https://example.test/graph"
+    assert c.is_instagram_login is False
+
+
+def test_list_pages_with_ig_synthesizes_for_instagram_login() -> None:
+    """IG-direct tokens have no Pages — verify we fake a single-row response."""
+    s = MagicMock(spec=requests.Session)
+    s.headers = {}
+    s.request.return_value = fake_response(
+        200, {"user_id": "17841999", "username": "myaccount", "name": "My Account"}
+    )
+    c = GraphClient("IGAAtok", session=s)
+    rows = c.list_pages_with_ig()
+    assert len(rows) == 1
+    assert rows[0]["instagram_business_account"]["id"] == "17841999"
+    assert rows[0]["name"] == "myaccount"

@@ -38,6 +38,7 @@ class Profile:
     app_secret: str | None = None
     timeout: int | None = None
     retries: int | None = None
+    base: str | None = None
 
 
 def load_profile(name: str = "default") -> Profile:
@@ -58,4 +59,5 @@ def load_profile(name: str = "default") -> Profile:
         app_secret=block.get("app_secret"),
         timeout=block.get("timeout"),
         retries=block.get("retries"),
+        base=block.get("base"),
     )

@@ -25,10 +25,23 @@ from meta_graph.errors import RETRYABLE_CODES, GraphError, from_response
 from meta_graph.version import DEFAULT_API_VERSION, __version__
 
 GRAPH_BASE = "https://graph.facebook.com"
+GRAPH_IG_BASE = "https://graph.instagram.com"
 USER_AGENT = f"meta-graph-cli/{__version__}"
 
 # Matches a leading /vXX.Y/ segment so we don't double-version paths.
 _VERSION_PREFIX = re.compile(r"^/v\d+(\.\d+)?/")
+
+
+def detect_base(token: str) -> str:
+    """Pick the right host from the token prefix.
+
+    Tokens starting with IGAA / IGQW belong to the Instagram-with-Instagram-Login
+    flow and target graph.instagram.com. Everything else (EAA, app tokens,
+    Page tokens, system-user tokens) goes to graph.facebook.com.
+    """
+    if token.startswith(("IGAA", "IGQW")):
+        return GRAPH_IG_BASE
+    return GRAPH_BASE
 
 
 class GraphClient:
@@ -40,7 +53,7 @@ class GraphClient:
         app_secret: str | None = None,
         timeout: int = 30,
         retries: int = 3,
-        base: str = GRAPH_BASE,
+        base: str | None = None,
         session: requests.Session | None = None,
     ) -> None:
         if not token:
@@ -50,9 +63,14 @@ class GraphClient:
         self.app_secret = app_secret
         self.timeout = timeout
         self.retries = max(0, retries)
-        self.base = base.rstrip("/")
+        self.base = (base or detect_base(token)).rstrip("/")
         self.session = session or requests.Session()
         self.session.headers.update({"User-Agent": USER_AGENT})
+
+    @property
+    def is_instagram_login(self) -> bool:
+        """True when this client is hitting graph.instagram.com (IGAA token flow)."""
+        return self.base == GRAPH_IG_BASE
 
     # ----- URL building --------------------------------------------------
 
@@ -207,7 +225,24 @@ class GraphClient:
     # ----- Convenience used by IG commands -------------------------------
 
     def list_pages_with_ig(self) -> list[dict[str, Any]]:
-        """List Pages the token can manage, including their linked IG account id when present."""
+        """List Pages the token can manage, including their linked IG account id when present.
+
+        For Instagram-with-Instagram-Login tokens (IGAA…) there are no Pages —
+        the token IS the IG account. We synthesize a single-row response so
+        downstream code can treat both flows uniformly.
+        """
+        if self.is_instagram_login:
+            me = self.get("/me", fields="user_id,username,name")
+            return [
+                {
+                    "id": None,
+                    "name": me.get("username") or me.get("name"),
+                    "access_token": self.token,
+                    "instagram_business_account": {
+                        "id": me.get("user_id") or me.get("id"),
+                    },
+                }
+            ]
         return list(
             self.paginate(
                 "/me/accounts",

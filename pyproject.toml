@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "meta-graph-cli"
-version = "0.1.0"
+version = "0.1.1"
 description = "A clean, httpie-style command-line client for Meta's Graph API and Instagram Graph API."
 readme = "README.md"
 license = "MIT"

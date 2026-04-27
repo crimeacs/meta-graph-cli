@@ -26,7 +26,8 @@ def test_help_shows_subcommands(runner: CliRunner) -> None:
 def test_version(runner: CliRunner) -> None:
     res = runner.invoke(main, ["--version"])
     assert res.exit_code == 0
-    assert "0.1.0" in res.output
+    from meta_graph.version import __version__
+    assert __version__ in res.output
 
 
 def test_no_token_exits_3(runner: CliRunner) -> None:

@@ -23,6 +23,7 @@ class Settings:
     timeout: int
     retries: int
     profile: str
+    base: str | None
 
 
 class AuthMissingError(Exception):
@@ -36,6 +37,7 @@ def resolve(
     cli_app_secret: str | None = None,
     cli_timeout: int | None = None,
     cli_retries: int | None = None,
+    cli_base: str | None = None,
     profile: str = "default",
 ) -> Settings:
     p = load_profile(profile)
@@ -68,6 +70,8 @@ def resolve(
     else:
         retries = 3
 
+    base = cli_base or os.environ.get("META_GRAPH_BASE") or p.base
+
     return Settings(
         token=token,
         api_version=api_version,
@@ -75,6 +79,7 @@ def resolve(
         timeout=int(timeout),
         retries=retries,
         profile=profile,
+        base=base,
     )
 
 

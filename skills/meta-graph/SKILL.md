@@ -49,15 +49,26 @@ If neither is true, **stop and ask the user** to either paste a token from <http
 
 ## Mental model
 
-Every IG operation needs a **3-tuple**: `(token, page_id, ig_user_id)`. The token grants access. The Page is the FB Page linked to the IG Business Account. The IG User ID is the actual IG account.
+Meta has **two Instagram API flows**, and the CLI auto-detects which one a token uses:
 
-**Always start by resolving the IG user id:**
+| Token prefix | Flow | Host | Page mediation? |
+|---|---|---|---|
+| `EAA…` | Instagram **with Facebook Login** | `graph.facebook.com` | yes — needs a linked FB Page |
+| `IGAA…` / `IGQW…` | Instagram **with Instagram Login** | `graph.instagram.com` | no — token IS the IG account |
+
+The CLI picks the right host automatically from the token's prefix; override with `--base` only when needed.
+
+**Resolving the IG user id**:
 
 ```bash
-meta ig accounts
+# Either flow:
+meta ig me                 # returns the IG account on either flow
+meta ig accounts           # also works on either; IG-direct returns one row, IG-flow="instagram-login"
 ```
 
-That returns one row per Page; each row carries `ig_user_id` (or null if the Page isn't linked to IG). Pass that id to every subsequent `meta ig user`, `meta ig publish`, `meta ig hashtag` command.
+For the Facebook-Login flow, `meta ig accounts` returns one row per Page, each with `ig_user_id`. Pass that id to every subsequent `meta ig user`, `meta ig publish`, `meta ig hashtag` command.
+
+For the Instagram-Login flow, you can use the `meta ig me` shortcuts (`me media`, `me insights`) so you never need the explicit id, OR run `meta ig me --jq '.user_id'` once and reuse the value. `meta ig publish me ...` also works (the token resolves `/me/media` correctly on graph.instagram.com).
 
 ## Core workflows
 

@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.1.1 — 2026-04-27
+
+### Added
+
+- **Instagram-with-Instagram-Login flow** (no FB Page required).
+  - Auto-detects host from token prefix: `IGAA*`/`IGQW*` → `graph.instagram.com`,
+    everything else → `graph.facebook.com`.
+  - New `meta ig me`, `meta ig me media`, `meta ig me insights` commands —
+    use them on the IG-direct flow so you never need to resolve an explicit
+    IG user id.
+  - `meta ig accounts` now returns a `flow` field (`"instagram-login"` or
+    `"facebook-login"`) and synthesizes a single-row response for the
+    IG-direct flow.
+  - `--base` global flag (and `META_GRAPH_BASE` env / `[default] base`
+    config) overrides the auto-detected host for non-standard endpoints.
+
+### Fixed
+
+- `_first_ig_id` helper now resolves correctly on the IG-direct flow
+  (was previously walking `/me/accounts` which doesn't exist on
+  `graph.instagram.com`).
+
 ## 0.1.0 — 2026-04-27
 
 Initial release.

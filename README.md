@@ -85,8 +85,18 @@ meta me permissions          # granted/declined permissions
 ### Instagram (the headline curated surface)
 
 ```bash
+# two flows, auto-detected from token prefix:
+#   EAA…  → graph.facebook.com  (Instagram with Facebook Login; needs linked Page)
+#   IGAA… → graph.instagram.com (Instagram with Instagram Login; no Page needed)
+# Override the host with --base when needed.
+
 # accounts
-meta ig accounts
+meta ig accounts                                    # works on either flow
+
+# IG-direct shortcuts (no explicit ig_id needed)
+meta ig me                                          # the IG account itself
+meta ig me media [--all]                            # your media
+meta ig me insights --metric impressions,reach --period day
 
 # user
 meta ig user IG_ID                                   # account fields
