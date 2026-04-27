@@ -33,7 +33,7 @@ NO, this skill isn't for: building an OAuth login UI, embedding the JS SDK in a 
 Before any command, verify:
 
 ```bash
-which meta || pip install meta-graph
+which meta || pip install meta-graph-cli
 ```
 
 If `meta` is missing and pip install fails, fall back to the local source install: `pip install -e ~/Documents/meta-graph-cli`.

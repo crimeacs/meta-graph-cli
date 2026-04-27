@@ -17,7 +17,7 @@ When this skill is installed, conversational requests like:
 ### Prerequisite
 
 ```bash
-pip install meta-graph
+pip install meta-graph-cli
 export META_GRAPH_TOKEN="EAA..."   # from https://developers.facebook.com/tools/explorer/
 ```
 

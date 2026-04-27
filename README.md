@@ -24,7 +24,7 @@ Meta ships SDKs (Python, JS, PHP) but no CLI. The SDKs are typed object hierarch
 ## Install
 
 ```bash
-pip install meta-graph        # binary becomes `meta`
+pip install meta-graph-cli    # binary becomes `meta`
 ```
 
 Or from source:
