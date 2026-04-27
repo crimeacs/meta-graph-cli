@@ -47,9 +47,9 @@ dev = [
 meta = "meta_graph.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/anovosel/meta-graph-cli"
-Repository = "https://github.com/anovosel/meta-graph-cli"
-Issues = "https://github.com/anovosel/meta-graph-cli/issues"
+Homepage = "https://github.com/crimeacs/meta-graph-cli"
+Repository = "https://github.com/crimeacs/meta-graph-cli"
+Issues = "https://github.com/crimeacs/meta-graph-cli/issues"
 
 [tool.hatch.build]
 include = [

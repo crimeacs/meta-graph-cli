@@ -133,7 +133,7 @@ def main() -> None:
         out.write(f"""# Meta Graph API + Instagram — Documentation Reference
 
 > Crawled from <https://developers.facebook.com/docs/> on {now}.
-> Source-of-truth for the [`meta-graph` Python CLI](https://github.com/anovosel/meta-graph-cli).
+> Source-of-truth for the [`meta-graph` Python CLI](https://github.com/crimeacs/meta-graph-cli).
 > Each section preserves its original source URL in an HTML comment.
 
 Contents:
