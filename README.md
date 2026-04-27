@@ -30,7 +30,7 @@ pip install meta-graph        # binary becomes `meta`
 Or from source:
 
 ```bash
-git clone https://github.com/anovosel/meta-graph-cli && cd meta-graph-cli
+git clone https://github.com/crimeacs/meta-graph-cli && cd meta-graph-cli
 pip install -e .
 ```
 
@@ -164,6 +164,16 @@ Errors go to stderr as JSON. Exit codes:
 - **Cursor pagination** via `--all` on listing commands; underlying `client.paginate()` follows `paging.next` until exhausted.
 - **Batched requests** via `meta batch` (reads JSON array from stdin).
 - **Bundled docs** at `docs/reference.md` — every Graph + Instagram endpoint scraped in one searchable markdown file. Regenerated via `python scripts/scrape.py && python scripts/concat.py && python scripts/build_data.py`.
+
+## Claude Code skill
+
+A [Claude Code skill](https://www.anthropic.com/news/claude-skills) that teaches Claude how to drive this CLI for natural-language Instagram/Meta tasks ships at [`skills/meta-graph/`](./skills/meta-graph/). Install with:
+
+```bash
+mkdir -p ~/.claude/skills && cp -r skills/meta-graph ~/.claude/skills/
+```
+
+Then ask Claude things like *"post this image to Instagram with caption '…'"* or *"reply to all unanswered comments on this Reel"* — it'll resolve your IG account, run the right `meta ig …` invocations, and surface error codes with actionable fixes. See [`skills/README.md`](./skills/README.md) for details.
 
 ## Library use
 
